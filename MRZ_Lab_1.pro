@@ -20,7 +20,7 @@ SOURCES += main.cpp \
     rectanglemodel.cpp
 
 INCLUDEPATH +=   D:\Nastya\Programs\Libriaries\CImg-2.1.2_pre102517 \
-        D:\Nastya\Programs\Libriaries\armadillo-8.200.1
+        D:\Nastya\Programs\Libriaries\armadillo-8.200.1\include
 
 HEADERS += \
     imagemodel.h \
