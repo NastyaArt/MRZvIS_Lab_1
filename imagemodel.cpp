@@ -117,7 +117,7 @@ double ImageModel::adaptiveLearningStep(mat matrix){  //тоже нестыко�
     mat temp = (matrix * matrix.t());
     return 1.0 / (temp(0,0) + FACTOR);
 */
-            double a = 1.0;
+           double a = 1.0;
             for (int i = 0; i < nmRGB; ++i) {
                 a += matrix(0, i) * matrix(0, i);
             }
@@ -148,7 +148,7 @@ void ImageModel::createOutputImage(){
             }
         }
     }
-    image.save("output.bmp");	//сохраняем выходное изображение
+    image.save("result_images/output_image2.bmp");	//сохраняем выходное изображение
 }
 //восстановление цветов для формирования выходного изображения
 int ImageModel::convertRGBToOutput(double color){
