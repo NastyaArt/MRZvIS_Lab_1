@@ -60,7 +60,7 @@ void ImageModel::run(){
     double step;	//коэффициент обучения а   для обучения нейронов первого слоя 
     double step_;	//коэффициент обучения а'  для корректировки весов на втором слое 
     double E;		//общая ошибка
-    //normalizeMatrixs(); // uncomment if necessary normalization  //нормализация 
+    normalizeMatrixs(); // uncomment if necessary normalization  //нормализация
     int iteration = 0;  //номер итерации
     do {		//выполняем цикл, пока общая ошибка не станет меньше максисмально допустимой
         E = 0;	//обнуляем ошибку для текущей итерации
@@ -77,7 +77,7 @@ void ImageModel::run(){
             }
             W = W - (step * X.t() * deltaX * W_.t()); 	//обучение нейронов первого слоя 
             W_ = W_ - (step_ * Y.t() * deltaX);		//корректировка весов на втором слое 
-            //normalizeMatrixs(); // uncomment if necessary normalization  //нормализация
+            normalizeMatrixs(); // uncomment if necessary normalization  //нормализация
         }
         // count error after correction		//вычисляем ошибку после обучения и корректировки 
         for (int index = 0; index < L; index++){	//перебираем все прямоугольники
@@ -99,7 +99,7 @@ void ImageModel::normalizeMatrixs(){
     normalizeMatrix(W_);	//нормализуем веса второго слоя
 }
 //нормализация матрицы
-void ImageModel::normalizeMatrix(mat matrix){  //?? формула в методе другая
+void ImageModel::normalizeMatrix(mat matrix){
     for (unsigned int i = 0; i < matrix.n_cols; i++) {		//перебор матрицы по колонкам
         double sum = 0;
         for (unsigned int j = 0; j < matrix.n_rows; j++) {	//перебор матрицы по строкам
@@ -113,9 +113,18 @@ void ImageModel::normalizeMatrix(mat matrix){  //?? формула в метод
 }
 //расчет адаптивного шага обучения
 double ImageModel::adaptiveLearningStep(mat matrix){  //тоже нестыковка с формулой
-    int FACTOR = 10;  //???
+  /*  int FACTOR = 10;  //???
     mat temp = (matrix * matrix.t());
     return 1.0 / (temp(0,0) + FACTOR);
+*/
+            double a = 1.0;
+            for (int i = 0; i < nmRGB; ++i) {
+                a += matrix(0, i) * matrix(0, i);
+            }
+
+            a = 1.0 / a;  //adapt step
+            return a;
+
 }
 //формирование выходного изображения
 void ImageModel::createOutputImage(){
@@ -139,7 +148,7 @@ void ImageModel::createOutputImage(){
             }
         }
     }
-    image.save("output.png");	//сохраняем выходное изображение
+    image.save("output.bmp");	//сохраняем выходное изображение
 }
 //восстановление цветов для формирования выходного изображения
 int ImageModel::convertRGBToOutput(double color){

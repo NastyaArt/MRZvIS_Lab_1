@@ -31,3 +31,6 @@ LIBS += -lAdvapi32 -lgdi32 -luser32 -lshell32 \
     -llapack_win64_MT \
     -lblas_win64_MT
 
+RESOURCES += \
+    images.qrc
+
